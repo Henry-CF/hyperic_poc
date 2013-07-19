@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE plugin [
+    <!ENTITY process-metrics SYSTEM "/pdk/plugins/process-metrics.xml">
+]>
+
+<plugin name="cc">
+    <property name="PLUGIN_VERSION" value="1.0.1"/>
+    <server name="cc-deamon">
+        <property name="PROC_QUERY" 
+                  value="Pid.PidFile.eq=/var/vcap/sys/run/cloud_controller_ng/cloud_controller_ng.pid"/>
+
+        <plugin type="autoinventory"
+                class="org.hyperic.hq.product.DaemonDetector"/>
+
+        <plugin type="measurement"
+                class="org.hyperic.hq.product.MeasurementPlugin"/>
+        <config>
+            <option name="process.query"
+                    default="${PROC_QUERY}"
+                    description="PTQL for CC Deamonn Process of Tempest">
+            </option>
+        </config>
+
+        <metric name="Availability"
+                template="sigar:Type=ProcState,Arg=%process.query%:State"
+                indicator="true"/>
+        &process-metrics;
+    </server>
+
+    <server name="bosh-agent">
+        <property name="PROC_QUERY" 
+                  value="Exe.Name.eq=/var/vcap/bosh/bin/ruby"/>
+
+        <plugin type="autoinventory"
+                class="org.hyperic.hq.product.DaemonDetector"/>
+
+        <plugin type="measurement"
+                class="org.hyperic.hq.product.MeasurementPlugin"/>
+        <config>
+            <option name="process.query"
+                    default="${PROC_QUERY}"
+                    description="PTQL for Bosh Agent Process of Tempest">
+            </option>
+        </config>
+
+        <metric name="Availability"
+                template="sigar:Type=ProcState,Arg=%process.query%:State"
+                indicator="true"/>
+        &process-metrics;
+    </server>
+
+    <server name="nginx-ccng">
+        <property name="PROC_QUERY" 
+                  value="Pid.PidFile.eq=/var/vcap/sys/run/nginx_ccng/nginx.pid"/>
+
+        <plugin type="autoinventory"
+                class="org.hyperic.hq.product.DaemonDetector"/>
+
+        <plugin type="measurement"
+                class="org.hyperic.hq.product.MeasurementPlugin"/>
+        <config>
+            <option name="process.query"
+                    default="${PROC_QUERY}"
+                    description="PTQL for Nginx Process of Tempest">
+            </option>
+        </config>
+
+        <metric name="Availability"
+                template="sigar:Type=ProcState,Arg=%process.query%:State"
+                indicator="true"/>
+        &process-metrics;
+    </server>
+</plugin>

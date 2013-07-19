@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<plugin name="tmpst_poc">
+   <property name="PLUGIN_VERSION" value="0.1.0"/>
+   <server name="VMware Tmpst">
+	   <config name="bosh_sdk">
+	       <option name="url"
+	           description="Tempest Bosh target url"
+	           default="https://localhost:25555"/>
+
+	       <option name="user"
+	           description="Username"/>
+
+	       <option name="pass"
+	           type="secret"
+	           description="Password"/>
+	   </config>
+       <plugin type="autoinventory"
+           class="org.hyperic.hq.product.DaemonDetector"/>
+       <metric name="Availability"
+           template="sigar:Type=ProcState,Arg=%process.query%:State"
+           indicator="true"/>
+   </server>
+</plugin>
